@@ -378,7 +378,7 @@ sqlmap -u "https://example.com/page?id=1" \
 
 SQLインジェクションは、機密データの漏洩や改ざん、システムの侵害につながる深刻な脆弱性です。本記事では、基本的な攻撃からBlind SQLインジェクション、sqlmapを使った自動化まで解説しました。
 
-**参考資料:**
+**参考資料：**
 
 - [PortSwigger Web Security Academy - SQL Injection](https://portswigger.net/web-security/sql-injection)
 - [OWASP SQL Injection](https://owasp.org/www-community/attacks/SQL_Injection)
