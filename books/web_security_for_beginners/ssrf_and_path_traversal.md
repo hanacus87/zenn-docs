@@ -29,6 +29,23 @@ SSRFは、攻撃者がサーバーに対して意図しないリクエストを�
 
 SSRFの危険性は、サーバーからのリクエストが持つ特権的な位置づけにあります。サーバーは通常、外部からは直接アクセスできない内部ネットワークに配置されており、内部サービス（データベース、管理画面、APIなど）へのアクセス権限を持っています。また、クラウド環境ではインスタンスメタデータAPI（`http://169.254.169.254/`）から認証情報を取得でき、localhostからのリクエストを信頼するアプリケーションでは認証を回避できる場合があります。
 
+### SSRFの攻撃フロー
+
+```mermaid
+%%{init: {'theme':'dark'}}%%
+sequenceDiagram
+    participant 攻撃者
+    participant Webサーバー
+    participant AWSメタデータ
+
+    攻撃者->>Webサーバー: GET /fetch-image?url=http://169.254.169.254/latest/meta-data/
+    Note over Webサーバー: URLパラメータの検証なし
+    Webサーバー->>AWSメタデータ: GET http://169.254.169.254/latest/meta-data/
+    AWSメタデータ->>Webサーバー: IAM認証情報を返却
+    Webサーバー->>攻撃者: 認証情報を含むレスポンス
+    Note over 攻撃者: AWS環境への完全なアクセス権を取得
+```
+
 ### 脆弱なコード例
 
 以下は、ユーザーが指定したURLの画像を取得して表示する機能を持つNode.jsのコード例です。この実装には重大な脆弱性が含まれています。
@@ -115,23 +132,6 @@ GET /fetch-image?url=file:///etc/passwd
 GET /fetch-image?url=gopher://localhost:6379/_FLUSHALL
 ```
 
-### SSRFの攻撃フロー
-
-```mermaid
-%%{init: {'theme':'dark'}}%%
-sequenceDiagram
-    participant 攻撃者
-    participant Webサーバー
-    participant AWSメタデータ
-
-    攻撃者->>Webサーバー: GET /fetch-image?url=http://169.254.169.254/latest/meta-data/
-    Note over Webサーバー: URLパラメータの検証なし
-    Webサーバー->>AWSメタデータ: GET http://169.254.169.254/latest/meta-data/
-    AWSメタデータ->>Webサーバー: IAM認証情報を返却
-    Webサーバー->>攻撃者: 認証情報を含むレスポンス
-    Note over 攻撃者: AWS環境への完全なアクセス権を取得
-```
-
 ## Path Traversal
 
 ### Path Traversalとは
@@ -139,6 +139,41 @@ sequenceDiagram
 Path Traversalは、ファイルパスの操作により、アプリケーションが想定していないディレクトリのファイルにアクセスできてしまう脆弱性です。Webアプリケーションがユーザーの入力を元にファイルパスを構築する際、適切な検証や正規化を行わないと、攻撃者は特殊な文字列（主に`../`）を使って親ディレクトリに移動し、任意のファイルを読み取ったり書き込んだりできてしまいます。
 
 この脆弱性が特に危険なのは、アプリケーションが動作しているユーザーの権限で、システム上のあらゆるファイルにアクセスできる可能性があるためです。Linux環境では`/etc/passwd`、秘密鍵ファイル、アプリケーションの設定ファイル（データベースの認証情報を含む）などが標的になります。
+
+### Path Traversalの攻撃対象
+
+```mermaid
+%%{init: {'theme':'dark'}}%%
+graph TD
+    A[ルートディレクトリ /] --> B[var]
+    A --> C[etc]
+    A --> D[home]
+
+    B --> E[www]
+    E --> F[uploads]
+    F --> G[想定されたアクセス範囲]
+
+    C --> H[passwd]
+    C --> I[shadow]
+
+    D --> J[user]
+    J --> K[.ssh]
+    K --> L[id_rsa]
+
+    classDef safeZone fill:#c8e6c9,stroke:#2e7d32,stroke-width:3px,color:#000000
+    classDef dangerZone fill:#ffcdd2,stroke:#c62828,stroke-width:3px,color:#000000
+    classDef normalNode fill:#e3f2fd,stroke:#1565c0,stroke-width:2px,color:#000000
+
+    class G safeZone
+    class H,I,L dangerZone
+    class A,B,C,D,E,F,J,K normalNode
+
+    M[攻撃者の入力:<br/>../../../etc/passwd] -.->|Path Traversal攻撃| H
+    N[正常な入力:<br/>document.pdf] -.->|正常なアクセス| G
+
+    style M fill:#fff9c4,stroke:#f57c00,stroke-width:2px,color:#000000
+    style N fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px,color:#000000
+```
 
 ### 脆弱なコード例
 
@@ -236,41 +271,6 @@ GET /download?file=../../../etc/passwd%00.jpg
 ```
 
 現在の多くのシステムではこの脆弱性は修正されていますが、レガシーシステムでは依然として有効な場合があります。
-
-### Path Traversalの攻撃フロー
-
-```mermaid
-%%{init: {'theme':'dark'}}%%
-graph TD
-    A[ルートディレクトリ /] --> B[var]
-    A --> C[etc]
-    A --> D[home]
-
-    B --> E[www]
-    E --> F[uploads]
-    F --> G[想定されたアクセス範囲]
-
-    C --> H[passwd]
-    C --> I[shadow]
-
-    D --> J[user]
-    J --> K[.ssh]
-    K --> L[id_rsa]
-
-    classDef safeZone fill:#c8e6c9,stroke:#2e7d32,stroke-width:3px,color:#000000
-    classDef dangerZone fill:#ffcdd2,stroke:#c62828,stroke-width:3px,color:#000000
-    classDef normalNode fill:#e3f2fd,stroke:#1565c0,stroke-width:2px,color:#000000
-
-    class G safeZone
-    class H,I,L dangerZone
-    class A,B,C,D,E,F,J,K normalNode
-
-    M[攻撃者の入力:<br/>../../../etc/passwd] -.->|Path Traversal攻撃| H
-    N[正常な入力:<br/>document.pdf] -.->|正常なアクセス| G
-
-    style M fill:#fff9c4,stroke:#f57c00,stroke-width:2px,color:#000000
-    style N fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px,color:#000000
-```
 
 ## SSRFとPath Traversalの関係とLFI
 
