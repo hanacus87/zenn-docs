@@ -3,8 +3,6 @@ title: "SSRFとPath Traversal"
 free: false
 ---
 
-# SSRFとPath traversal
-
 :::message alert
 **重要な法的注意事項**
 
@@ -25,7 +23,7 @@ OWASP Top 10 2021では、SSRFが新たに独立したカテゴリとしてラ�
 
 ## SSRF（Server-Side Request Forgery）
 
-### SSRFとは何か
+### SSRFとは
 
 SSRFは、攻撃者がサーバーに対して意図しないリクエストを送信させることができる脆弱性です。Webアプリケーションがユーザーの要求に応じて外部リソースを取得する機能において、適切な制限がない場合、攻撃者はサーバーを「踏み台」として利用し、本来アクセスできないリソースにアクセスできてしまいます。
 
@@ -134,9 +132,9 @@ sequenceDiagram
     Note over 攻撃者: AWS環境への完全なアクセス権を取得
 ```
 
-## Path Traversal（Directory Traversal）
+## Path Traversal
 
-### Path Traversalとは何か
+### Path Traversalとは
 
 Path Traversalは、ファイルパスの操作により、アプリケーションが想定していないディレクトリのファイルにアクセスできてしまう脆弱性です。Webアプリケーションがユーザーの入力を元にファイルパスを構築する際、適切な検証や正規化を行わないと、攻撃者は特殊な文字列（主に`../`）を使って親ディレクトリに移動し、任意のファイルを読み取ったり書き込んだりできてしまいます。
 
@@ -274,7 +272,7 @@ graph TD
     style N fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px,color:#000000
 ```
 
-## 両者の比較とLFI（Local File Inclusion）
+## SSRFとPath Traversalの関係とLFI
 
 ### SSRFとPath Traversalの比較
 

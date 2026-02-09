@@ -13,9 +13,9 @@ free: false
 - 本記事の内容を悪用した場合、筆者は一切の責任を負いません
   :::
 
-## 1. SQLインジェクション概要
+## 1. SQL Injection
 
-### 1.1 SQLインジェクションとは
+### 1.1 SQL Injectionとは
 
 SQLインジェクション(SQLi)は、攻撃者がアプリケーションのデータベースクエリに干渉できるWebセキュリティ脆弱性です。攻撃者は本来アクセスできないデータの閲覧、変更、削除が可能になります。
 
@@ -39,7 +39,7 @@ SELECT * FROM products WHERE category = 'Gifts' OR 1=1--' AND released = 1
 
 SQLインジェクション脆弱性は、SELECTクエリのWHERE句で最も頻繁に発生しますが、UPDATE文、INSERT文、ORDER BY句など、様々な箇所で発生する可能性があります。
 
-## 2. SQLインジェクションの攻撃種別
+## 2. SQL Injectionの攻撃種別
 
 ### 2.1 WHERE句を利用した基本的な攻撃
 
