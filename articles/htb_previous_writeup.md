@@ -14,8 +14,6 @@ published_at: "2026-02-06 00:00"
 
 Next.jsのミドルウェアバイパス脆弱性（CVE-2025-29927）を利用してLFI脆弱性を発見し、認証情報を取得する。その後、Terraformプロバイダーの悪用により権限昇格を行う。
 
----
-
 ## 1. 攻撃フロー
 
 ```mermaid
@@ -39,8 +37,6 @@ flowchart TD
         J --> K[root取得]
     end
 ```
-
----
 
 ## 2. user.txt 奪取
 
@@ -195,8 +191,6 @@ ssh jeremy@previous.htb
 cat ~/user.txt
 ```
 
----
-
 ## 3. root.txt 奪取
 
 ### 3.1 sudo 権限の確認
@@ -329,8 +323,6 @@ sudo /usr/bin/terraform -chdir=/opt/examples apply
 cat /root/root.txt
 ```
 
----
-
 ## まとめ
 
 ### 使用した脆弱性・技術
@@ -342,8 +334,6 @@ cat /root/root.txt
 | 初期アクセス | Local File Inclusion         | パストラバーサル                |
 | 権限昇格     | Terraform Provider Hijacking | 環境変数 + カスタムプロバイダー |
 
----
-
-## 参考リンク
+**参考：**
 
 - [CVE-2025-29927 - Next.js Middleware Bypass](https://nvd.nist.gov/vuln/detail/CVE-2025-29927)

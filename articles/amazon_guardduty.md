@@ -142,7 +142,7 @@ sequenceDiagram
 }
 ```
 
-## 参考リンク
+**参考：**
 
 ### Amazon GuardDuty導入済みファイル共有アプリ
 

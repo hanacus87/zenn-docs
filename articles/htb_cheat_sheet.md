@@ -12,17 +12,15 @@ published_at: "2026-01-05 23:12"
 
 本記事は、HackTheBoxのLinuxマシンを攻略する際に使用する基礎コマンドをまとめたチートシートです。主に80番ポート(html)が空いていた場合によく使用するコマンド集です。
 
----
-
 ## 攻略フロー図
 
 ```mermaid
 flowchart TD
-    A["🔍 偵察・情報収集<br> nmap / whatweb / nikto"]
-    B["📂 ディレクトリ列挙<br> gobuster / ffuf / feroxbuster"]
-    C["🔎 HTTP解析<br> curl / wget"]
-    D["💉 脆弱性スキャン<br> sqlmap / nuclei"]
-    E["🐚 シェル取得<br> nc + rlwrap"]
+    A["🔍 偵察・情報収集<br/> nmap / whatweb / nikto"]
+    B["📂 ディレクトリ列挙<br/> gobuster / ffuf / feroxbuster"]
+    C["🔎 HTTP解析<br/> curl / wget"]
+    D["💉 脆弱性スキャン<br/> sqlmap / nuclei"]
+    E["🐚 シェル取得<br/> nc + rlwrap"]
 
     A --> B --> C --> D --> E
 
@@ -32,8 +30,6 @@ flowchart TD
     style D fill:#ffebee,stroke:#c62828,stroke-width:3px,color:#b71c1c
     style E fill:#f3e5f5,stroke:#7b1fa2,stroke-width:3px,color:#6a1b9a
 ```
-
----
 
 ## 1. 偵察・情報収集
 
@@ -83,8 +79,6 @@ nmap -sV --script=http-enum,http-headers,http-methods -p 80 10.10.10.x
 nmap -sC -sV -oA scan_result 10.10.10.x
 ```
 
----
-
 ### whatweb
 
 Webアプリケーションのフィンガープリンティングツール。CMS、ブログプラットフォーム、JavaScript ライブラリ、Webサーバーなどを識別。
@@ -116,8 +110,6 @@ whatweb -v http://10.10.10.x
 # アグレッシブモード
 whatweb -a 3 http://10.10.10.x
 ```
-
----
 
 ### nikto
 
@@ -176,8 +168,6 @@ nikto -h http://10.10.10.x -o nikto_result.txt -Format txt
 # 特定のチューニングでスキャン（情報漏洩 + インジェクション）
 nikto -h http://10.10.10.x -Tuning 34
 ```
-
----
 
 ## 2. ディレクトリ・ファイル列挙
 
@@ -245,8 +235,6 @@ gobuster vhost -u http://10.10.10.x -w /usr/share/seclists/Discovery/DNS/subdoma
 # DNS列挙
 gobuster dns -d example.com -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt
 ```
-
----
 
 ### ffuf
 
@@ -319,8 +307,6 @@ ffuf -w /usr/share/seclists/Discovery/Web-Content/burp-parameter-names.txt -u "h
 ffuf -w wordlist.txt -u http://10.10.10.x/login -X POST -H "Content-Type: application/x-www-form-urlencoded" -d "username=admin&password=FUZZ" -fc 401
 ```
 
----
-
 ### feroxbuster
 
 Rust製の高速で再帰的なディレクトリ/ファイル列挙ツール。自動再帰スキャンが特徴。
@@ -367,8 +353,6 @@ feroxbuster -u http://10.10.10.x -w wordlist.txt -C 404,403
 feroxbuster -u http://10.10.10.x -w wordlist.txt -o ferox.txt
 ```
 
----
-
 ### dirb
 
 クラシックなWebコンテンツスキャナー。シンプルで使いやすい。
@@ -409,8 +393,6 @@ dirb http://10.10.10.x -X .php,.html,.txt
 # 出力ファイル指定
 dirb http://10.10.10.x -o dirb_result.txt
 ```
-
----
 
 ## 3. HTTPリクエスト・解析
 
@@ -476,8 +458,6 @@ curl -O http://10.10.10.x/file.txt
 curl -v http://10.10.10.x
 ```
 
----
-
 ### wget
 
 ファイルダウンロードおよびWebサイトミラーリングツール。
@@ -520,8 +500,6 @@ wget -m -np -k http://10.10.10.x/
 # SSL証明書無視
 wget --no-check-certificate https://10.10.10.x/file.txt
 ```
-
----
 
 ## 4. 脆弱性スキャン・エクスプロイト
 
@@ -611,8 +589,6 @@ sqlmap -u "http://10.10.10.x/page.php?id=1" --batch --level=5 --risk=3
 sqlmap -u "http://10.10.10.x/page.php?id=1" --os-shell
 ```
 
----
-
 ### nuclei
 
 テンプレートベースの高速脆弱性スキャナー。コミュニティ提供の多数のテンプレートで様々な脆弱性を検出。
@@ -655,8 +631,6 @@ nuclei -u http://10.10.10.x -severity high,critical
 # 出力ファイル指定
 nuclei -u http://10.10.10.x -o nuclei_result.txt
 ```
-
----
 
 ## 5. シェル取得・リスナー
 
@@ -702,8 +676,6 @@ nc 10.10.10.x 4444 < file_to_send
 
 > **※注1**: `-e` および `-c` オプションは、セキュリティ上の理由から多くのシステムで無効化されています。これらのオプションは `netcat-traditional` や `ncat`（Nmap付属）など特定の実装でのみ利用可能です。Kali Linuxでは `nc.traditional` コマンドで利用できる場合があります。
 
----
-
 ### rlwrap
 
 readline wrapperで、上下キーでのコマンド履歴やCtrl+Cなどをサポート。ncの操作性を大幅に向上。
@@ -730,8 +702,6 @@ rlwrap nc -lvnp 4444
 rlwrap -c nc -lvnp 4444
 ```
 
----
-
 ## よく使うワードリストパス（Kali Linux）
 
 | 用途               | パス                                                                 |
@@ -742,8 +712,6 @@ rlwrap -c nc -lvnp 4444
 | サブドメイン       | `/usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt`  |
 | パラメータ名       | `/usr/share/seclists/Discovery/Web-Content/burp-parameter-names.txt` |
 | パスワード         | `/usr/share/wordlists/rockyou.txt`                                   |
-
----
 
 ## 出典
 
@@ -762,5 +730,3 @@ rlwrap -c nc -lvnp 4444
 | nuclei      | [https://github.com/projectdiscovery/nuclei](https://github.com/projectdiscovery/nuclei)                 |
 | nc (netcat) | [https://linux.die.net/man/1/nc](https://linux.die.net/man/1/nc)                                         |
 | rlwrap      | [https://github.com/hanslub42/rlwrap](https://github.com/hanslub42/rlwrap)                               |
-
----

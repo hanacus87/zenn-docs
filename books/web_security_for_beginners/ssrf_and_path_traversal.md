@@ -282,7 +282,7 @@ GET /download?file=../../../etc/passwd%00.jpg
 | ------------------------ | ------------------------------------------------------------------ | --------------------------------------------------------- |
 | **攻撃対象**             | ネットワークリソース（URL）                                        | ファイルシステム上のファイル                              |
 | **主な操作**             | HTTP/その他プロトコルリクエスト                                    | ファイルの読み取り/書き込み                               |
-| **典型的な入力**         | `http://169.254.169.254/...`<br>`http://localhost:8080/admin`      | `../../../etc/passwd`<br>`../../config/database.yml`      |
+| **典型的な入力**         | `http://169.254.169.254/...`<br/>`http://localhost:8080/admin`     | `../../../etc/passwd`<br/>`../../config/database.yml`     |
 | **主な標的**             | 内部API、メタデータエンドポイント、<br/>内部サービス、管理画面     | システムファイル、設定ファイル、<br/>秘密鍵、ソースコード |
 | **影響範囲**             | ネットワーク全体<br/>（内部・外部問わず）                          | サーバーのファイルシステム内                              |
 | **利用可能なプロトコル** | HTTP, HTTPS, FTP, FILE, GOPHER, etc.                               | ファイルシステムパス                                      |
@@ -739,7 +739,7 @@ SSRF、Path Traversal、LFIは、いずれも信頼できないユーザー入�
 - [x] アプリケーションを最小権限で実行している
 - [x] ファイル操作をログに記録している
 
-**参考資料：**
+**参考：**
 
 - [OWASP Server-Side Request Forgery Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html)
 - [CWE-918: Server-Side Request Forgery (SSRF)](https://cwe.mitre.org/data/definitions/918.html)

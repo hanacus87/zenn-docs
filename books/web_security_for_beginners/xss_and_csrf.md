@@ -453,9 +453,7 @@ const api = axios.create({
 - [x] Origin/Refererヘッダーの検証を追加
 - [x] クロスオリジンリクエストを適切に制限
 
----
-
-**参考資料：**
+**参考：**
 
 - [OWASP XSS Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html)
 - [OWASP CSRF Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html)
