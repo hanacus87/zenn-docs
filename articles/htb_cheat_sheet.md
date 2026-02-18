@@ -1,7 +1,7 @@
 ---
 title: "HackTheBoxのLinuxマシン攻略のための基礎コマンド集"
 emoji: "🦂"
-type: "tech"
+type: "idea"
 topics:
   - "linux"
   - "security"

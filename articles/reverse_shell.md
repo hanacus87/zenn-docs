@@ -1,7 +1,7 @@
 ---
 title: "Bashリバースシェル解説"
 emoji: "🕸️"
-type: "tech"
+type: "idea"
 topics:
   - "linux"
   - "bash"
