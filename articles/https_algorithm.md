@@ -1,7 +1,7 @@
 ---
 title: "HTTPS通信の暗号化の仕組みから暗号を理解したい"
 emoji: "🔐"
-type: "idea"
+type: "tech"
 topics:
   - "https"
   - "ssl"
