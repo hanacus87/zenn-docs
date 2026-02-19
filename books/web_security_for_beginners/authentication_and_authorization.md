@@ -566,7 +566,7 @@ HTTP/1.1 201 Created
 
 ## まとめ
 
-### SAMLチェックリスト
+**SAMLチェックリスト**
 
 - [x] `strict: true` を必ず有効化し署名検証をスキップしない
 - [x] 署名アルゴリズムは `RSA-SHA256` 以上を強制する
@@ -576,7 +576,7 @@ HTTP/1.1 201 Created
 - [x] `NotBefore` / `NotOnOrAfter` の時刻検証を実施する
 - [x] IdPから受け取る `Issuer` を検証する
 
-### OAuth 2.0チェックリスト
+**OAuth 2.0チェックリスト**
 
 - [x] `redirect_uri` は登録済みリストとの**完全一致**で検証する
 - [x] `state` パラメータを毎回生成し、コールバック時に検証する
@@ -586,7 +586,7 @@ HTTP/1.1 201 Created
 - [x] Implicit フローを使用しない（Authorization Code + PKCE へ移行する）
 - [x] スコープは最小権限の原則で設計する
 
-### OIDCチェックリスト
+**OIDCチェックリスト**
 
 - [x] id_token の署名アルゴリズムを明示的に指定し、`"none"` を拒否する
 - [x] `iss`（Issuer）が期待するIdPと一致するか検証する
