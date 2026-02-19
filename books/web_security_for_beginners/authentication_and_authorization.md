@@ -601,7 +601,6 @@ HTTP/1.1 201 Created
 - [RFC 6749 - The OAuth 2.0 Authorization Framework](https://www.rfc-editor.org/rfc/rfc6749)
 - [RFC 7636 - PKCE](https://www.rfc-editor.org/rfc/rfc7636)
 - [OpenID Connect Core 1.0](https://openid.net/specs/openid-connect-core-1_0.html)
-- [OWASP Top 10 2021](https://owasp.org/Top10/)
 
 :::message
 セキュリティは攻撃と防御の両面を理解することで向上します。本記事で学んだ知識を、より安全なシステム構築に活かしてください。
