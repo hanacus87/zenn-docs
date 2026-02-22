@@ -25,9 +25,9 @@ XSS（Cross-Site Scripting）は、Webアプリケーションに悪意のある
 %%{init: {'theme':'dark'}}%%
 graph TD
     subgraph "XSSの分類"
-        A[Stored XSS<br/>蓄積型] -->|サーバーに保存| D[最も危険]
-        B[Reflected XSS<br/>反射型] -->|URLパラメータ経由| E[中〜高リスク]
-        C[DOM-based XSS<br/>DOM型] -->|クライアント完結| F[検出困難]
+        A[Stored XSS<br>蓄積型] -->|サーバーに保存| D[最も危険]
+        B[Reflected XSS<br>反射型] -->|URLパラメータ経由| E[中〜高リスク]
+        C[DOM-based XSS<br>DOM型] -->|クライアント完結| F[検出困難]
     end
 
     style A fill:#ff6b6b,color:#000
@@ -131,7 +131,7 @@ CSRF（Cross-Site Request Forgery）は、ユーザーが意図しない操作�
 sequenceDiagram
     participant V as 被害者
     participant B as ブラウザ
-    participant L as 正規サイト<br/>(銀行)
+    participant L as 正規サイト<br>(銀行)
     participant A as 攻撃者サイト
 
     V->>L: 1. ログイン
@@ -220,10 +220,10 @@ sequenceDiagram
 ```mermaid
 %%{init: {'theme':'dark'}}%%
 graph LR
-    A[XSS脆弱性発見] --> B[CSRFトークン含む<br/>ページ取得]
+    A[XSS脆弱性発見] --> B[CSRFトークン含む<br>ページ取得]
     B --> C[トークン抽出]
-    C --> D[正規トークン付き<br/>リクエスト送信]
-    D --> E[CSRF保護<br/>バイパス成功]
+    C --> D[正規トークン付き<br>リクエスト送信]
+    D --> E[CSRF保護<br>バイパス成功]
 
     style A fill:#ff6b6b,color:#fff
     style E fill:#ff6b6b,color:#fff

@@ -25,7 +25,7 @@ sequenceDiagram
     participant Target as ファイル共有アプリ
 
     User->>Evil: サイト訪問
-    Evil->>Target: ユーザーのブラウザから<br/>意図しないリクエスト
+    Evil->>Target: ユーザーのブラウザから<br>意図しないリクエスト
     Target->>Target: ファイルアップロード処理
     Note over User: 攻撃に気づかない
 ```
@@ -48,8 +48,8 @@ CORSには、**Simple Request**という概念があり、特定条件下でPref
 ```mermaid
 flowchart LR
     A[リクエスト] --> B{Simple Request?}
-    B -->|YES| C[Preflight なし<br/>直接実行]
-    B -->|NO| D[Preflight Request<br/>→ 検証]
+    B -->|YES| C[Preflight なし<br>直接実行]
+    B -->|NO| D[Preflight Request<br>→ 検証]
 
     style C fill:#ff0000,color:#000000
 ```
@@ -87,19 +87,19 @@ flowchart LR
 ```mermaid
 sequenceDiagram
     participant User as 被害者ユーザー
-    participant Evil as 攻撃者のサイト<br/>evil.com
+    participant Evil as 攻撃者のサイト<br>evil.com
     participant Browser as ブラウザ
-    participant Target as ファイル共有アプリ<br/>target-app.com
+    participant Target as ファイル共有アプリ<br>target-app.com
 
     User->>Evil: 1. 悪意のあるリンクをクリック
     Evil->>Browser: 2. 攻撃用JavaScriptを返す
     Browser->>Browser: 3. スクリプト実行
-    Note over Browser: Blob作成<br/>FormData準備
-    Browser->>Target: 4. POST /api/upload<br/>Content-Type: multipart/form-data<br/>(Preflight なし)
-    Target->>Target: 5. ファイルを保存<br/>uploads/innocent-image.php
-    Target->>Browser: 6. 成功レスポンス<br/>(読めないが処理済み)
+    Note over Browser: Blob作成<br>FormData準備
+    Browser->>Target: 4. POST /api/upload<br>Content-Type: multipart/form-data<br>(Preflight なし)
+    Target->>Target: 5. ファイルを保存<br>uploads/innocent-image.php
+    Target->>Browser: 6. 成功レスポンス<br>(読めないが処理済み)
 
-    Note over User,Target: 攻撃成功<br/>Webシェルがアップロードされた
+    Note over User,Target: 攻撃成功<br>Webシェルがアップロードされた
 
     Evil->>Target: 7. https://target-app.com/uploads/innocent-image.php?cmd=ls
     Target->>Evil: 8. ファイル一覧を返す
@@ -125,7 +125,7 @@ sequenceDiagram
 
     Browser->>Server: GET / (ページ取得)
     Server->>Browser: HTML + CSRFトークン
-    Browser->>Server: POST /upload<br/>+ CSRFトークン
+    Browser->>Server: POST /upload<br>+ CSRFトークン
     Server->>Server: トークン検証
     alt 有効
         Server->>Browser: 成功

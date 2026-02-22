@@ -22,8 +22,8 @@ free: false
 
 ```mermaid
 flowchart LR
-    A[社員証を提示] -->|本人確認| B[認証<br/>あなたはAさんですね]
-    B -->|権限確認| C[認可<br/>Aさんは3Fの入室を許可]
+    A[社員証を提示] -->|本人確認| B[認証<br>あなたはAさんですね]
+    B -->|権限確認| C[認可<br>Aさんは3Fの入室を許可]
     C --> D[ドアが開く]
 ```
 
@@ -31,15 +31,15 @@ flowchart LR
 
 **主要用語**
 
-| 用語                            | 説明                                                                                                                                                      |
-| ------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **IdP<br/>(Identity Provider)** | ユーザーのアイデンティティを管理・証明する主体（例：Google、Azure AD）                                                                                    |
-| **SP<br/>(Service Provider)**   | IdP を信頼してサービスを提供する主体（例：社内業務システム）                                                                                              |
-| **SSO<br/>(Single Sign-On)**    | 1度のログインで複数サービスにアクセスできる仕組み                                                                                                         |
-| **JWT<br/>(JSON Web Token)**    | JSONをBase64URLエンコードし署名したトークン形式                                                                                                           |
-| **アサーション**                | IdPが発行する「このユーザーは認証済み」という証明書（SAMLで使用）                                                                                         |
-| **スコープ**                    | OAuthで要求するアクセス権限の範囲（例：`read:email`）                                                                                                     |
-| **クレーム**                    | JWTのペイロードに含まれる情報の単位（例：`iss`,`aud`,`exp`,`nonce`）<br/>「このトークンは誰が発行し、誰宛で、いつ期限が切れるか」といったメタデータを表す |
+| 用語                           | 説明                                                                                                                                                     |
+| ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **IdP<br>(Identity Provider)** | ユーザーのアイデンティティを管理・証明する主体（例：Google、Azure AD）                                                                                   |
+| **SP<br>(Service Provider)**   | IdP を信頼してサービスを提供する主体（例：社内業務システム）                                                                                             |
+| **SSO<br>(Single Sign-On)**    | 1度のログインで複数サービスにアクセスできる仕組み                                                                                                        |
+| **JWT<br>(JSON Web Token)**    | JSONをBase64URLエンコードし署名したトークン形式                                                                                                          |
+| **アサーション**               | IdPが発行する「このユーザーは認証済み」という証明書（SAMLで使用）                                                                                        |
+| **スコープ**                   | OAuthで要求するアクセス権限の範囲（例：`read:email`）                                                                                                    |
+| **クレーム**                   | JWTのペイロードに含まれる情報の単位（例：`iss`,`aud`,`exp`,`nonce`）<br>「このトークンは誰が発行し、誰宛で、いつ期限が切れるか」といったメタデータを表す |
 
 ## SAML 2.0 の仕組みと脆弱性
 
@@ -109,7 +109,7 @@ sequenceDiagram
     Note over Attacker: 正規のSAMLレスポンスを入手
     Attacker->>Attacker: 署名済み正規アサーション（A）を保持
     Attacker->>Attacker: 悪意あるアサーション（B：admin権限）を作成
-    Attacker->>Attacker: XMLを細工<br/>署名の Reference URI="#A" のまま<br/>SPが最初に読む位置にBを配置
+    Attacker->>Attacker: XMLを細工<br>署名の Reference URI="#A" のまま<br>SPが最初に読む位置にBを配置
     Attacker->>SP: 細工したSAMLレスポンスをPOST
     SP->>SP: 署名検証：A を検証 → 正当
     SP->>SP: アサーション取得：B（admin）を使用
@@ -184,13 +184,13 @@ sequenceDiagram
 
     User->>App: ログイン / 連携ボタンをクリック
     App->>User: 認可エンドポイントへリダイレクト
-    Note right of App: ?client_id=xxx<br/>&redirect_uri=https://app.example.com/callback<br/>&scope=read:email<br/>&state=RANDOM_VALUE<br/>&code_challenge=PKCE_HASH
+    Note right of App: ?client_id=xxx<br>&redirect_uri=https://app.example.com/callback<br>&scope=read:email<br>&state=RANDOM_VALUE<br>&code_challenge=PKCE_HASH
     User->>AS: 認可リクエスト
     AS->>User: ログイン画面 + 権限承認画面
     User->>AS: 承認
     AS->>User: redirect_uri へリダイレクト + 認可コード（code）
     User->>App: code を転送
-    App->>AS: code + client_secret でトークンリクエスト<br/>（バックエンド）
+    App->>AS: code + client_secret でトークンリクエスト<br>（バックエンド）
     AS->>App: access_token（+ refresh_token）
     App->>RS: access_token でAPIコール
     RS->>App: リソース（データ）を返す
@@ -223,23 +223,23 @@ sequenceDiagram
     participant App as ターゲットアプリ
     participant AS as 認可サーバー（Google等）
 
-    Note over Attacker: 攻撃者自身のアカウントで<br/>OAuthフローを開始
+    Note over Attacker: 攻撃者自身のアカウントで<br>OAuthフローを開始
     Attacker->>AS: 認可リクエスト（攻撃者アカウントで承認）
     AS->>Attacker: /callback?code=ATTACKER_CODE を返す
 
-    Note over Attacker: コールバックURLを<br/>コピーしてフローを中断<br/>（トークン交換を行わない）
+    Note over Attacker: コールバックURLを<br>コピーしてフローを中断<br>（トークン交換を行わない）
 
-    Note over Attacker: 被害者にそのURLを踏ませる<br/>（メールのimg src、フィッシング等）
+    Note over Attacker: 被害者にそのURLを踏ませる<br>（メールのimg src、フィッシング等）
     Attacker->>Victim: 細工したURLを送付
 
-    Victim->>App: GET /callback?code=ATTACKER_CODE<br/>（被害者のセッションで実行）
+    Victim->>App: GET /callback?code=ATTACKER_CODE<br>（被害者のセッションで実行）
     App->>App: state 未検証のままコードを処理
     App->>AS: ATTACKER_CODE でトークン交換
     AS->>App: 攻撃者のアクセストークンを発行
 
-    Note over App: 被害者のアカウントに<br/>攻撃者のGoogleアカウントが紐付く
+    Note over App: 被害者のアカウントに<br>攻撃者のGoogleアカウントが紐付く
 
-    Note over Attacker: 攻撃者は自分のGoogleアカウントで<br/>被害者のアカウントにログイン可能になる
+    Note over Attacker: 攻撃者は自分のGoogleアカウントで<br>被害者のアカウントにログイン可能になる
 ```
 
 #### stateによる防御の仕組み
@@ -336,11 +336,11 @@ sequenceDiagram
 
 **パラメータの対応関係**
 
-| パラメータ              | タイミング       | 内容                                                                                          |
-| ----------------------- | ---------------- | --------------------------------------------------------------------------------------------- |
-| `code_verifier`         | アプリ内で保持   | ランダムな文字列<br/>認可リクエスト時には送信せず、トークン交換時にのみ認可サーバーへ送信する |
-| `code_challenge`        | 認可リクエスト時 | `BASE64URL(SHA-256(code_verifier))` のハッシュ値                                              |
-| `code_challenge_method` | 認可リクエスト時 | `S256`（SHA-256）を指定する。`plain` は非推奨                                                 |
+| パラメータ              | タイミング       | 内容                                                                                         |
+| ----------------------- | ---------------- | -------------------------------------------------------------------------------------------- |
+| `code_verifier`         | アプリ内で保持   | ランダムな文字列<br>認可リクエスト時には送信せず、トークン交換時にのみ認可サーバーへ送信する |
+| `code_challenge`        | 認可リクエスト時 | `BASE64URL(SHA-256(code_verifier))` のハッシュ値                                             |
+| `code_challenge_method` | 認可リクエスト時 | `S256`（SHA-256）を指定する。`plain` は非推奨                                                |
 
 `code_verifier` はSPAのメモリ上にのみ保持されます。認可サーバーにはそのハッシュ値（`code_challenge`）だけを事前に登録し、トークン交換時に`code_verifier`を提示することで「このコードを要求した本人である」と証明します。拡張機能などの第三者は `code_verifier` を知る手段がないため、認可コードを入手してもトークンに交換できません。
 SPAに限らず、Authorization Code フロー全般で PKCE の使用が推奨されています。
@@ -359,7 +359,7 @@ sequenceDiagram
     participant Evil as 攻撃者のサーバー
 
     Attacker->>Attacker: 細工したURLを作成
-    Note right of Attacker: redirect_uri=https://app.example.com.evil.com/cb<br/>（前方一致チェックを通過）
+    Note right of Attacker: redirect_uri=https://app.example.com.evil.com/cb<br>（前方一致チェックを通過）
     Attacker->>Victim: 細工したURLをフィッシング等で踏ませる
     Victim->>AS: 認可リクエスト（偽のredirect_uri）
     AS->>AS: 前方一致で検証 → 通過
@@ -426,7 +426,7 @@ OIDCを使うと、OAuth 2.0のフローに加えて `id_token`（JWT形式）�
 flowchart TB
     subgraph OIDC["OIDC（OpenID Connect）"]
         direction TB
-        A["id_token（JWT）<br/>nonce<br/>/userinfo"]
+        A["id_token（JWT）<br>nonce<br>/userinfo"]
         subgraph OAuth2["OAuth 2.0"]
         end
     end
@@ -464,7 +464,7 @@ sequenceDiagram
     participant OP as OpenID Provider
 
     Note over App, OP: 認可リクエスト時（OAuth 2.0との差分）
-    App->>OP: scope に openid を追加<br/>nonce=RANDOM_VALUE を追加
+    App->>OP: scope に openid を追加<br>nonce=RANDOM_VALUE を追加
 
     Note over App, OP: トークンレスポンス時（OAuth 2.0との差分）
     OP->>App: access_token に加えて id_token（JWT）が返される
@@ -554,15 +554,15 @@ HTTP/1.1 201 Created
 
 ### 概要比較
 
-| 観点                 | SAML 2.0                          | OAuth 2.0            | OIDC                   |
-| -------------------- | --------------------------------- | -------------------- | ---------------------- |
-| **主な目的**         | 認証・SSO                         | 認可                 | 認証・認可             |
-| **データ形式**       | XML                               | JSON / Opaque        | JWT（id_token）        |
-| **主な利用場面**     | 社内システム<br/>エンタープライズ | APIアクセス委譲      | ソーシャルログイン     |
-| **ユーザー情報**     | SAMLアサーション内                | 規定なし（実装依存） | id_token<br/>/userinfo |
-| **モバイル対応**     | △（XMLが重い）                    | ◎                    | ◎                      |
-| **仕様の複雑さ**     | 高                                | 中                   | 中                     |
-| **新規開発での採用** | 既存環境との互換性優先            | API認可用途          | 推奨                   |
+| 観点                 | SAML 2.0                         | OAuth 2.0            | OIDC                  |
+| -------------------- | -------------------------------- | -------------------- | --------------------- |
+| **主な目的**         | 認証・SSO                        | 認可                 | 認証・認可            |
+| **データ形式**       | XML                              | JSON / Opaque        | JWT（id_token）       |
+| **主な利用場面**     | 社内システム<br>エンタープライズ | APIアクセス委譲      | ソーシャルログイン    |
+| **ユーザー情報**     | SAMLアサーション内               | 規定なし（実装依存） | id_token<br>/userinfo |
+| **モバイル対応**     | △（XMLが重い）                   | ◎                    | ◎                     |
+| **仕様の複雑さ**     | 高                               | 中                   | 中                    |
+| **新規開発での採用** | 既存環境との互換性優先           | API認可用途          | 推奨                  |
 
 ## まとめ
 

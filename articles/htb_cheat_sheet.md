@@ -16,11 +16,11 @@ published_at: "2026-01-05 23:12"
 
 ```mermaid
 flowchart TD
-    A["🔍 偵察・情報収集<br/> nmap / whatweb / nikto"]
-    B["📂 ディレクトリ列挙<br/> gobuster / ffuf / feroxbuster"]
-    C["🔎 HTTP解析<br/> curl / wget"]
-    D["💉 脆弱性スキャン<br/> sqlmap / nuclei"]
-    E["🐚 シェル取得<br/> nc + rlwrap"]
+    A["🔍 偵察・情報収集<br> nmap / whatweb / nikto"]
+    B["📂 ディレクトリ列挙<br> gobuster / ffuf / feroxbuster"]
+    C["🔎 HTTP解析<br> curl / wget"]
+    D["💉 脆弱性スキャン<br> sqlmap / nuclei"]
+    E["🐚 シェル取得<br> nc + rlwrap"]
 
     A --> B --> C --> D --> E
 

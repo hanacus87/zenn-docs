@@ -22,9 +22,9 @@ Amazon GuardDuty Malware Protection for S3 を活用し、アップロードさ�
 
 ```mermaid
 flowchart LR
-    A[ファイル<br/>アップロード] --> B{マルウェア<br/>スキャン}
+    A[ファイル<br>アップロード] --> B{マルウェア<br>スキャン}
     B -->|クリーン| C[ダウンロード許可]
-    B -->|感染| D[ファイル削除<br/>アクセス拒否]
+    B -->|感染| D[ファイル削除<br>アクセス拒否]
     B -->|スキャン中| E[ダウンロード保留]
 
     style C fill:#22c55e,color:#000000
@@ -55,13 +55,13 @@ graph TB
     end
 
     subgraph "マルウェアスキャン層"
-        GD[GuardDuty<br/>Malware Protection]
+        GD[GuardDuty<br>Malware Protection]
         EB[EventBridge]
-        L5[ScanResult<br/>Lambda]
+        L5[ScanResult<br>Lambda]
     end
 
     subgraph "API層"
-        L2[Download<br/>Lambda]
+        L2[Download<br>Lambda]
     end
 
     U -->|アップロード| S3F

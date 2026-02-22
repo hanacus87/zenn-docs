@@ -147,11 +147,11 @@ flowchart TB
 
 ```mermaid
 graph TD
-    R["ルートCA<br/>OSやブラウザにあらかじめ組み込まれている"]
-    I1["ルートCAが信頼を委譲した<br/>中間CA1"]
-    I2["ルートCAが信頼を委譲した<br/>中間CA2"]
-    S1["サーバー証明書<br/>example.com"]
-    S2["サーバー証明書<br/>shop.example.com"]
+    R["ルートCA<br>OSやブラウザにあらかじめ組み込まれている"]
+    I1["ルートCAが信頼を委譲した<br>中間CA1"]
+    I2["ルートCAが信頼を委譲した<br>中間CA2"]
+    S1["サーバー証明書<br>example.com"]
+    S2["サーバー証明書<br>shop.example.com"]
 
     R -->|"署名"| I1
     R -->|"署名"| I2
@@ -179,22 +179,22 @@ sequenceDiagram
     participant S as サーバー
     participant CA as CA（認証局）
 
-    Note over CA: 事前にサーバー証明書<br/>（公開鍵入り）を発行済み
+    Note over CA: 事前にサーバー証明書<br>（公開鍵入り）を発行済み
 
     Note over C,S: ① ハンドシェイク開始
-    C->>S: ClientHello<br/>（対応する暗号方式・TLSバージョン一覧）
-    S->>C: ServerHello<br/>（使用する暗号方式を決定）
+    C->>S: ClientHello<br>（対応する暗号方式・TLSバージョン一覧）
+    S->>C: ServerHello<br>（使用する暗号方式を決定）
 
     Note over C,S: ② 証明書の送付と検証
-    S->>C: サーバー証明書を送付<br/>（公開鍵・CAの署名入り）
+    S->>C: サーバー証明書を送付<br>（公開鍵・CAの署名入り）
     Note over C: ルートCA証明書はOS/ブラウザに組込済
     Note over C: 証明書チェーンを検証
 
     Note over C,S: ③ 共通鍵の安全な共有
     C->>C: 共通鍵の元となるデータを生成
     C->>S: サーバーの公開鍵で暗号化して送付
-    S->>S: 秘密鍵で復号し<br/>共通鍵を導出
-    Note over C,S: クライアントとサーバーだけが<br/>共通鍵を知っている状態になる
+    S->>S: 秘密鍵で復号し<br>共通鍵を導出
+    Note over C,S: クライアントとサーバーだけが<br>共通鍵を知っている状態になる
 
     Note over C,S: ④ 暗号化通信の開始
     C->>S: 共通鍵で暗号化したデータ
@@ -222,10 +222,10 @@ flowchart LR
         S2["鍵の配布が難しい"]
     end
 
-    PK -->|"公開鍵で共通鍵を<br/>安全に共有"| HYBRID
+    PK -->|"公開鍵で共通鍵を<br>安全に共有"| HYBRID
     SK -->|"実際のデータ通信に使用"| HYBRID
 
-    HYBRID["ハイブリッド暗号方式<br/>安全性と速度を両立"]
+    HYBRID["ハイブリッド暗号方式<br>安全性と速度を両立"]
 ```
 
 | フェーズ           | 使用する暗号方式 | 目的                   |
@@ -289,14 +289,14 @@ graph TB
 
     subgraph サーバー["サーバー"]
         KEYPAIR["公開鍵 + 秘密鍵のペアを生成"]
-        CERT["証明書<br/>（公開鍵 + CAの署名）"]
+        CERT["証明書<br>（公開鍵 + CAの署名）"]
         DECRYPT["秘密鍵で共通鍵を復号"]
     end
 
     subgraph クライアント["クライアント（ブラウザ）"]
         VERIFY["証明書の署名を検証"]
         ENCRYPT["公開鍵で共通鍵を暗号化"]
-        COMM["共通鍵で通信を<br/>暗号化・復号"]
+        COMM["共通鍵で通信を<br>暗号化・復号"]
     end
 
     CA_node -->|"署名"| CERT

@@ -32,12 +32,12 @@ sequenceDiagram
     participant Webアプリ
     participant 内部サーバー
 
-    攻撃者->>Webアプリ: 悪意のあるURLを指定してリクエスト<br/>(http://192.168.0.X:8080/admin)
+    攻撃者->>Webアプリ: 悪意のあるURLを指定してリクエスト<br>(http://192.168.0.X:8080/admin)
     Webアプリ->>内部サーバー: リクエスト転送
     内部サーバー->>Webアプリ: 管理画面のレスポンス
     Webアプリ->>攻撃者: レスポンス表示
 
-    Note over 攻撃者,内部サーバー: 攻撃者は直接アクセスできない<br/>内部リソースに到達可能
+    Note over 攻撃者,内部サーバー: 攻撃者は直接アクセスできない<br>内部リソースに到達可能
 ```
 
 ### 実際の脅威
@@ -62,11 +62,11 @@ graph TB
     end
 
     subgraph backend
-        B[Webアプリケーション<br/>在庫チェック機能]
+        B[Webアプリケーション<br>在庫チェック機能]
     end
 
     subgraph 内部ネットワーク
-        C[管理サーバー<br/>192.168.0.X:8080]
+        C[管理サーバー<br>192.168.0.X:8080]
     end
 
     A -->|stockApi parameter| B
