@@ -10,6 +10,7 @@ price: 0
 toc_depth: 2
 chapters:
   - "sql_injection"
+  - "sop_and_cors"
   - "xss_and_csrf"
   - "ssrf_and_path_traversal"
   - "authentication_and_authorization"
