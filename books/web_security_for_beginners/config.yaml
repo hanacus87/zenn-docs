@@ -1,8 +1,7 @@
 title: "Web Security 入門 - 攻撃者視点から見たWebアプリ"
 summary: |-
-  PortSwigger Web Application Academy で学習した内容をもとに作成しました
-
-  ※執筆途中※
+  Web Securityのトピックを雑多にまとめたノートです。
+  随時更新します。
 topics:
   - "web"
   - "security"
