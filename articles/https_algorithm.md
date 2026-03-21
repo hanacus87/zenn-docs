@@ -1,5 +1,5 @@
 ---
-title: "HTTPS通信の暗号化の仕組みから暗号を理解したい"
+title: "【暗号】HTTPS通信の仕組み"
 emoji: "🔐"
 type: "idea"
 topics:
