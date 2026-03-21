@@ -1,5 +1,5 @@
 ---
-title: "HackTheBoxのLinuxマシン攻略のための基礎コマンド集"
+title: "【HackTheBox】Linuxマシン用チートシート"
 emoji: "🦂"
 type: "idea"
 topics:
@@ -10,25 +10,19 @@ published: true
 published_at: "2026-01-05 23:12"
 ---
 
-本記事は、HackTheBoxのLinuxマシンを攻略する際に使用する基礎コマンドをまとめたチートシートです。主に80番ポート(html)が空いていた場合によく使用するコマンド集です。
+本記事は、HackTheBoxのLinuxマシンを攻略する際に使用する基礎コマンドをまとめたチートシートです。主に80番ポート(HTTP)が空いていた場合によく使用するコマンド集です。
 
-## 攻略フロー図
+## 攻略フロー例
 
 ```mermaid
 flowchart TD
-    A["🔍 偵察・情報収集<br> nmap / whatweb / nikto"]
-    B["📂 ディレクトリ列挙<br> gobuster / ffuf / feroxbuster"]
-    C["🔎 HTTP解析<br> curl / wget"]
-    D["💉 脆弱性スキャン<br> sqlmap / nuclei"]
-    E["🐚 シェル取得<br> nc + rlwrap"]
+    A["偵察・情報収集<br> nmap / whatweb / nikto"]
+    B["ディレクトリ列挙<br> gobuster / ffuf / feroxbuster"]
+    C["HTTP解析<br> curl / wget"]
+    D["脆弱性スキャン<br> sqlmap / nuclei"]
+    E["シェル取得<br> nc + rlwrap"]
 
     A --> B --> C --> D --> E
-
-    style A fill:#e3f2fd,stroke:#1565c0,stroke-width:3px,color:#0d47a1
-    style B fill:#fff3e0,stroke:#ef6c00,stroke-width:3px,color:#e65100
-    style C fill:#e8f5e9,stroke:#2e7d32,stroke-width:3px,color:#1b5e20
-    style D fill:#ffebee,stroke:#c62828,stroke-width:3px,color:#b71c1c
-    style E fill:#f3e5f5,stroke:#7b1fa2,stroke-width:3px,color:#6a1b9a
 ```
 
 ## 1. 偵察・情報収集
@@ -713,7 +707,9 @@ rlwrap -c nc -lvnp 4444
 | パラメータ名       | `/usr/share/seclists/Discovery/Web-Content/burp-parameter-names.txt` |
 | パスワード         | `/usr/share/wordlists/rockyou.txt`                                   |
 
-## 出典
+## まとめ
+
+**参考：**
 
 | ツール      | 公式ドキュメント                                                                                         |
 | ----------- | -------------------------------------------------------------------------------------------------------- |
