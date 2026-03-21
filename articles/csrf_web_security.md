@@ -1,5 +1,5 @@
 ---
-title: "ファイル共有アプリとCSRF"
+title: "【CSRF】ファイル共有アプリのセキュリティ対策"
 emoji: "🕵️‍♂️"
 type: "tech"
 topics:
@@ -191,33 +191,33 @@ fetch("/api/upload", {
 ### 重要なポイント
 
 1. **`multipart/form-data`はPreflight Requestが発生しない** - CORSだけでは不十分
-2. **認証なしでもCSRF対策は場合によっては必要** - マルウェア拡散の踏み台化を防ぐ
+2. **認証なしでもCSRF対策は必要** - 踏み台攻撃を防ぐ
 3. **多層防御が効果的** - 複数の対策を組み合わせる
 
 **参考：**
 
-### CSRFトークン実装済みファイル共有アプリ
+CSRFトークン実装済みファイル共有アプリ
 
 https://github.com/hanacus87/file-sharing
 
-### 書籍：体系的に学ぶ 安全なWebアプリケーションの作り方 第2版
+体系的に学ぶ 安全なWebアプリケーションの作り方 第2版
 
 https://www.sbcr.jp/product/4797393163/
 
-### 公式ドキュメント
+公式ドキュメント
 
 - [OWASP CSRF Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html)
 - [MDN - CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS)
 - [MDN - Preflight request](https://developer.mozilla.org/en-US/docs/Glossary/Preflight_request)
 - [MDN - CSRF](https://developer.mozilla.org/en-US/docs/Web/Security/Attacks/CSRF)
 
-### Cookie関連
+Cookie関連
 
 - [MDN - Using HTTP cookies](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies)
 - [MDN - Set-Cookie](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie)
 - [web.dev - SameSite cookies explained](https://web.dev/articles/samesite-cookies-explained)
 
-### 仕様
+仕様
 
 - [RFC 6265 - HTTP State Management Mechanism](https://datatracker.ietf.org/doc/html/rfc6265)
 - [Fetch Standard - CORS protocol](https://fetch.spec.whatwg.org/#http-cors-protocol)
