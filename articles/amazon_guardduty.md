@@ -1,5 +1,5 @@
 ---
-title: "Amazon GuardDutyによるアップロードファイルチェック"
+title: "【Amazon GuardDuty】S3のマルウェア対策"
 emoji: "🦠"
 type: "tech"
 topics:
@@ -10,11 +10,11 @@ published: true
 published_at: "2026-01-05 21:59"
 ---
 
-## 機能概要
+## 機能概要と課題
 
 ### 課題
 
-ファイル共有サービスでは、ユーザーがアップロードしたファイルにマルウェアが含まれるリスクがあります。感染ファイルが他のユーザーにダウンロードされると、被害が拡大する恐れがあります。
+ファイル共有サービスを運営する場合、ユーザーがアップロードしたファイルにマルウェアが含まれるリスクがあります。感染ファイルが他のユーザーにダウンロードされると、被害が拡大する恐れがあります。
 
 ### 解決
 
@@ -50,14 +50,14 @@ graph TB
     end
 
     subgraph "ストレージ層"
-        S3F[(S3ファイル)]
+        S3F[(S3 Object)]
         DDB[(DynamoDB)]
     end
 
     subgraph "マルウェアスキャン層"
         GD[GuardDuty<br>Malware Protection]
         EB[EventBridge]
-        L5[ScanResult<br>Lambda]
+        L1[ScanResult<br>Lambda]
     end
 
     subgraph "API層"
@@ -67,9 +67,9 @@ graph TB
     U -->|アップロード| S3F
     S3F -->|自動スキャン| GD
     GD -->|結果通知| EB
-    EB --> L5
-    L5 -->|スキャン結果保存| DDB
-    L5 -->|感染時削除| S3F
+    EB --> L1
+    L1 -->|スキャン結果保存| DDB
+    L1 -->|感染時削除| S3F
 
     U -->|ダウンロード要求| L2
     L2 -->|スキャン状態確認| DDB
@@ -77,22 +77,21 @@ graph TB
 
     style GD fill:#00a4ca,color:#000000
     style EB fill:#ff9900,color:#000000
-    style L5 fill:#ff9900,color:#000000
+    style L1 fill:#ff9900,color:#000000
     style L2 fill:#ff9900,color:#000000
     style S3F fill:#569a31,color:#000000
     style DDB fill:#4b53bc,color:#000000
 ```
 
-## スキャン結果とアプリケーション動作
+### スキャン結果とアプリケーション動作
 
 | scanResultStatus   | アプリケーション動作       | HTTPステータス        |
 | ------------------ | -------------------------- | --------------------- |
 | `NO_THREATS_FOUND` | ダウンロード許可           | 200                   |
 | `THREATS_FOUND`    | ファイル削除・アクセス拒否 | 403 (`ACCESS_DENIED`) |
 | `PENDING`          | ダウンロード保留           | 202 (`SCAN_PENDING`)  |
-| `UNSUPPORTED`      | ダウンロード許可           | 200                   |
 
-## データフロー
+### データフロー
 
 ```mermaid
 sequenceDiagram
@@ -130,7 +129,7 @@ sequenceDiagram
     end
 ```
 
-## EventBridgeルールの例
+### EventBridgeルールの例
 
 ```json
 {
@@ -142,12 +141,14 @@ sequenceDiagram
 }
 ```
 
+## まとめ
+
+Amazon GuardDuty Malware Protection for S3 を活用することで、アップロード時のマルウェアスキャンとアクセス制御を自動化し、安全なファイル共有基盤を構築できます。
+
 **参考：**
-
-### Amazon GuardDuty導入済みファイル共有アプリ
-
-https://github.com/hanacus87/file-sharing
 
 - [GuardDuty Malware Protection for S3](https://docs.aws.amazon.com/guardduty/latest/ug/gdu-malware-protection-s3.html)
 - [Monitoring S3 object scans with Amazon EventBridge](https://docs.aws.amazon.com/guardduty/latest/ug/monitor-with-eventbridge-s3-malware-protection.html)
 - [Using Amazon GuardDuty Malware Protection to scan uploads to Amazon S3 | AWS Security Blog](https://aws.amazon.com/blogs/security/using-amazon-guardduty-malware-protection-to-scan-uploads-to-amazon-s3/)
+
+https://github.com/hanacus87/file-sharing
