@@ -1,5 +1,5 @@
 ---
-title: "SSRFをBurpSuiteで実践"
+title: "【BurpSuite】SSRF実践"
 emoji: "🔗"
 type: "tech"
 topics:
@@ -125,7 +125,7 @@ https://zenn.dev/hanacus87/books/web_security_for_beginners/viewer/ssrf_and_path
 
 ## まとめ
 
-Port Swiggerが提供しているWeb Security Academyには、SSRFだけではなく、様々なWeb脆弱性に対する攻撃を実践可能なLabがあります。手を動かしてWeb Securityを学びたい人たちにとってはとても優良なコンテンツですので、挑戦してWeb Securityに関するリテラシーを高めていきましょう。
+PortSwiggerが提供しているWeb Security Academyには、SSRFだけではなく、様々なWeb脆弱性に対する攻撃を実践可能なLabがあります。手を動かしてWeb Securityを学びたい人たちにとってはとても優良なコンテンツですので、挑戦してWeb Securityに関するリテラシーを高めていきましょう。
 
 **参考：**
 https://portswigger.net/web-security
