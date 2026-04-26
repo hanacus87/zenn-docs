@@ -239,7 +239,7 @@ OIDCはOAuth2.0を置き換えるのではなく、**認可はOAuth2.0に任せ�
 
 責務の分離を適切に理解して利用しましょう。
 
-**参考 :**
+**参考：**
 
 - [RFC 6749 - The OAuth 2.0 Authorization Framework](https://datatracker.ietf.org/doc/html/rfc6749)
 - [OpenID Connect Core 1.0](https://openid.net/specs/openid-connect-core-1_0.html)

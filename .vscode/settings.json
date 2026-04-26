@@ -3,5 +3,13 @@
     "**/node_modules": true,
     "**/package-lock.json": true
   },
-  "cSpell.words": ["ffuf", "gobuster", "netcat", "nmap", "sqlmap", "whatweb"]
+  "cSpell.words": [
+    "ffuf",
+    "gobuster",
+    "netcat",
+    "nmap",
+    "pkce",
+    "sqlmap",
+    "whatweb"
+  ]
 }
