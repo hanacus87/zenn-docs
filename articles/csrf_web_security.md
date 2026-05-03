@@ -51,7 +51,7 @@ flowchart LR
     B -->|YES| C[Preflight なし<br>直接実行]
     B -->|NO| D[Preflight Request<br>→ 検証]
 
-    style C fill:#ff0000,color:#000000
+    style C fill:#ef4444,color:#000000
 ```
 
 ### 罠サイトサンプルコード
