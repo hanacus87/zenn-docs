@@ -1,4 +1,4 @@
-title: "【CVE-2025-55182】React2Shell - 脆弱性の仕組みとPoCの理解"
+title: "React2Shell (CVE-2025-55182) - 脆弱性の仕組みとPoCの理解"
 summary: "test"
 topics: ["react", "security", "web", "poc", "react2shell"]
 published: false
