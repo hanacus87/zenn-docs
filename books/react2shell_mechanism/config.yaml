@@ -1,9 +1,10 @@
 title: "React2Shell (CVE-2025-55182) - 脆弱性の仕組みとPoCの理解"
-summary: "test"
+summary: "CVE-2025-55182 について素人ながらにまとめてみました。"
 topics: ["react", "security", "web", "poc", "react2shell"]
-published: false
+published: true
 price: 0 # 有料の場合200〜5000
 # 本に含めるチャプターを順番に並べましょう
 chapters:
   - rsc
   - cve_and_poc
+  - appendix
