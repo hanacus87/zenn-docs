@@ -1,7 +1,7 @@
 ---
 title: "【サーバ】Webアプリのサーバ周りの用語を整理してみる"
 emoji: "🗄️"
-type: "tech"
+type: "idea"
 topics:
   - "nginx"
   - "server"
