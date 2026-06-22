@@ -196,10 +196,6 @@ fetch("/api/upload", {
 
 **参考：**
 
-CSRFトークン実装済みファイル共有アプリ
-
-https://github.com/hanacus87/file-sharing
-
 体系的に学ぶ 安全なWebアプリケーションの作り方 第2版
 
 https://www.sbcr.jp/product/4797393163/
