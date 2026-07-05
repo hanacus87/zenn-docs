@@ -38,7 +38,7 @@ flowchart TD
     end
 ```
 
-## 2. user.txt 奪取
+## 2. user.txt
 
 ### 2.1 偵察
 
@@ -191,7 +191,7 @@ ssh jeremy@previous.htb
 cat ~/user.txt
 ```
 
-## 3. root.txt 奪取
+## 3. root.txt
 
 ### 3.1 sudo 権限の確認
 
