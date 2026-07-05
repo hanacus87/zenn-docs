@@ -113,7 +113,7 @@ curl -s http://previous.htb/docs \
 
 ![](/images/htb_previous_writeup/docsPageInfo.png)
 
-認証なしで `/docs` ページにアクセス成功
+認証なしで `/docs` ページにアクセス成功。
 
 ### 2.4 アプリケーション構造の調査
 
@@ -245,7 +245,7 @@ provider_installation {
 }
 ```
 
-`previous.htb/terraform/examples` プロバイダーは `/usr/local/go/bin` から読み込まれる
+`previous.htb/terraform/examples` プロバイダーは `/usr/local/go/bin` から読み込まれる。
 
 ### 3.3 Terraform Provider Hijacking
 
@@ -325,7 +325,7 @@ cat /root/root.txt
 
 ## まとめ
 
-### 使用した脆弱性・技術
+### 使用した脆弱性
 
 | フェーズ     | 脆弱性/技術                  | CVE/詳細                        |
 | ------------ | ---------------------------- | ------------------------------- |

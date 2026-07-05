@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/hanacus87/zenn-docs#readme",
   "dependencies": {
-    "zenn-cli": "^0.5.1"
+    "zenn-cli": "^0.5.2"
   },
   "devDependencies": {
     "prettier": "^3.8.4"
